@@ -35,13 +35,16 @@ function createFeatures (earthquakeData){
 
 function color(magnitude){
     if (magnitude < 2){
-        return "green"
+        return "#00ff00" //Green
     }
     else if (magnitude <4){
-        return "yellow"
+        return "#ffff00" //Yellow
+    }
+    else if (magnitude <6){
+        return "#ff9900" //Orange
     }
     else{
-        return "red"
+        return "#ff0000" //Red
     }
 }
 
@@ -93,5 +96,25 @@ function createMap(earthquakes){
     L.control.layers(BaseMaps, OverlayMaps,{
         collapsed: false
     }).addTo(myMap);
-}
+
+    //LEGEND
+
+    var legend = L.control({position: "bottomright"});
+
+    legend.onAdd = function(map) {
+        var div = L.DomUtil.create("div", "info legend"),
+            grades = [0, 2, 4, 6],
+            labels =[];
+        
+            div.innerHTML =["<p style='background-color: #ffffff'>LEGEND</p>"]
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+            "<i style='background-color:" + color(grades[i]) + "'> " +
+            'Magnitudes: ' + grades[i] + (grades[i+1] ? '&ndash;' + grades[i+1] + '</i><br>' : '+');
+        }
+        return div;
+    };
+    legend.addTo(myMap);
+};
+
 
